@@ -1,0 +1,2 @@
+export 'generated/generated.dart';
+

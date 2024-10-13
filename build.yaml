@@ -1,0 +1,22 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          any_map: true
+          explicit_to_json: true
+        generate_for:
+          include:
+            - lib/model/*.dart
+      riverpod_generator:
+        generate_for:
+          include:
+            - lib/provider/*.dart
+      hive_generator:
+        generate_for:
+          include:
+            - lib/model/*.dart
+      flutter_gen_runner:
+        generate_for:
+          exclude:
+            - lib/**/*.dart

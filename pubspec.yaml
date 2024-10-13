@@ -1,0 +1,83 @@
+name: bgmd
+description: "A bangumi data project."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_hooks: ^0.20.5
+  hooks_riverpod: ^2.5.2
+  riverpod_annotation: ^2.3.5
+  animations: ^2.0.11
+  hive: ^2.2.3
+  share_plus: ^10.0.2
+  intl: ^0.19.0
+  hive_flutter: ^1.1.0
+  collection: ^1.18.0
+  dynamic_color: ^1.7.0
+  android_intent_plus: ^5.1.0
+  url_launcher: ^6.3.0
+  flutter_smart_dialog: ^4.9.8+2
+  gap: ^3.0.1
+  flex_color_picker: ^3.5.1
+  waterfall_flow: ^3.0.3
+  path: ^1.9.0
+  json_annotation: ^4.9.0
+  path_provider: ^2.1.4
+  sliver_tools: ^0.2.12
+  infinite_carousel: ^1.1.1
+  http: ^1.2.2
+  flutter_svg: ^2.0.10+1
+  vector_graphics: ^1.1.11+1
+  jiffy: ^6.3.1
+
+  crypto: any
+  fuzzywuzzy: ^1.2.0
+  file_picker: ^8.1.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  build_runner: ^2.4.12
+  riverpod_generator: ^2.4.3
+  custom_lint: ^0.6.7
+  riverpod_lint: ^2.3.13
+  flutter_gen_runner: ^5.7.0
+  flutter_launcher_icons: ^0.13.1
+  hive_generator: ^2.0.1
+  json_serializable: ^6.8.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - bgmd.png
+    - assets/
+
+flutter_gen:
+  output: lib/res/
+  line_length: 80
+
+  integrations:
+    flutter_svg: true
+    flare_flutter: true
+    rive: true
+    lottie: true
+flutter_launcher_icons:
+  android: false
+  ios: false
+  image_path: "bgmd.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+  windows:
+    generate: true
+    icon_size: 48
+  macos:
+    generate: true
