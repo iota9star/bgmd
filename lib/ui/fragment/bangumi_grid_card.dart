@@ -35,7 +35,7 @@ class BangumiGridCard extends ConsumerWidget {
                               ),
                             )
                           : Image(
-                              image: CacheImage(item.cover),
+                              image: NetworkImage(item.cover),
                               fit: BoxFit.cover,
                               loadingBuilder: (context, child, loadingProgress) {
                                 if (loadingProgress == null) {

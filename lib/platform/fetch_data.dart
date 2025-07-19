@@ -8,8 +8,11 @@ import '../model/bangumi.dart';
 export 'fetch_data.io.dart' if (dart.library.html) 'fetch_data.web.dart';
 
 Future<BangumiData> innerFetch(String url) async {
-  final response = await http.get(Uri.parse(url));
-  final json = jsonDecode(response.body);
+  final response = await http.get(Uri.parse(url),headers: {
+
+  });
+  final body = response.bodyBytes;
+  final json = jsonDecode(utf8.decode(body));
   final siteMeta = json['siteMeta'] as Map<String, dynamic>;
   final items = (json['items'] as List).map((e) => Item.fromJson(e)).sorted((a, b) {
     return DateTime.parse(b.begin).millisecondsSinceEpoch - DateTime.parse(a.begin).millisecondsSinceEpoch;

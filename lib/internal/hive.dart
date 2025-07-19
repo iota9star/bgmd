@@ -31,6 +31,9 @@ class HiveBoxes {
     if (!kIsWeb) {
       final directory = await getTemporaryDirectory();
       await settings.put('cache_dir', directory.path);
+    } else {
+      // For web, we don't have a temporary directory, so we use a fixed path.
+      await settings.put('cache_dir', 'web_cache');
     }
   }
 }

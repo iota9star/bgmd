@@ -1,1 +1,16 @@
 <!doctypehtml><base href=$FLUTTER_BASE_HREF><meta charset=UTF-8><meta content="IE=Edge"http-equiv=X-UA-Compatible><meta content="A bangumi data project."name=description><meta content=yes name=apple-mobile-web-app-capable><meta content=black name=apple-mobile-web-app-status-bar-style><meta content=bgmd name=apple-mobile-web-app-title><link href=icons/Icon-192.png rel=apple-touch-icon><link href=favicon.png rel=icon type=image/png><title>BangumiD</title><link href=manifest.json rel=manifest><link href=ani.css rel=stylesheet><div id=loading><i class=purple></i> <i class=medium-blue></i> <i class=light-blue></i> <i class=red></i> <i class=orange></i> <i class=yellow></i> <i class=cyan></i> <i class=light-green></i> <i class=lime></i> <i class=magenta></i> <i class=lightish-red></i> <i class=pink></i></div><script async src=flutter_bootstrap.js></script>
+<script>
+    setInterval(() => {
+        let hostElement = document.querySelector('flt-glass-pane');
+        let shadowRoot = hostElement.shadowRoot;
+        if (shadowRoot) {
+            if (shadowRoot.querySelector('#img-hook')) {
+                return;
+            }
+            let style = document.createElement('style');
+            style.setAttribute("id", "img-hook");
+            style.textContent = `img {object-fit: cover;}`;
+            shadowRoot.appendChild(style);
+        }
+    }, 2000);
+</script>

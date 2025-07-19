@@ -28,9 +28,7 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
     final sites = item.sites?.map((e) {
       return e.toSiteWidget(context, siteMeta);
     });
-    final tags = [
-      item.type.name.toUpperCase(),
-    ];
+    final tags = [item.type.name.toUpperCase()];
     if (!item.broadcast.isNullOrBlank) {
       final recurrence = parseRecurrence(item.broadcast!);
       if (recurrence != null) {
@@ -94,7 +92,10 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
                                 child: Stack(
                                   children: [
                                     Image(
-                                      image: CacheImage(item.cover),
+                                      image: CacheImage(
+                                        item.cover,
+                                        webHtmlElementStrategy: WebHtmlElementStrategy.prefer,
+                                      ),
                                       fit: BoxFit.cover,
                                       loadingBuilder: (context, child, loadingProgress) {
                                         if (loadingProgress == null) {
@@ -104,12 +105,7 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
                                         if (expectedTotalBytes == null) {
                                           return const AspectRatio(
                                             aspectRatio: 3 / 4,
-                                            child: Center(
-                                              child: Text(
-                                                '🌝',
-                                                style: TextStyle(fontSize: 20.0),
-                                              ),
-                                            ),
+                                            child: Center(child: Text('🌝', style: TextStyle(fontSize: 20.0))),
                                           );
                                         }
                                         return AspectRatio(
@@ -125,12 +121,7 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
                                       errorBuilder: (context, error, stackTrace) {
                                         return const AspectRatio(
                                           aspectRatio: 3 / 4,
-                                          child: Center(
-                                            child: Text(
-                                              '💔',
-                                              style: TextStyle(fontSize: 20.0),
-                                            ),
-                                          ),
+                                          child: Center(child: Text('💔', style: TextStyle(fontSize: 20.0))),
                                         );
                                       },
                                     ),
@@ -142,36 +133,34 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
                                         alignment: WrapAlignment.end,
                                         spacing: 4.0,
                                         runSpacing: 4.0,
-                                        children: tags.map((e) {
-                                          return DecoratedBox(
-                                            decoration: BoxDecoration(
-                                              color: context.colors.primaryContainer,
-                                              borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 1.25),
-                                              child: Text(
-                                                e,
-                                                style: context.textTheme.labelSmall?.copyWith(
-                                                  height: 1.25,
-                                                  fontSize: 10.0,
-                                                  color: context.colors.onPrimaryContainer,
+                                        children: tags
+                                            .map((e) {
+                                              return DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: context.colors.primaryContainer,
+                                                  borderRadius: const BorderRadius.all(Radius.circular(6.0)),
                                                 ),
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(growable: false),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 1.25),
+                                                  child: Text(
+                                                    e,
+                                                    style: context.textTheme.labelSmall?.copyWith(
+                                                      height: 1.25,
+                                                      fontSize: 10.0,
+                                                      color: context.colors.onPrimaryContainer,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            })
+                                            .toList(growable: false),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               const Gap(8.0),
-                              Text(
-                                title,
-                                style: context.textTheme.titleMedium,
-                                textAlign: TextAlign.center,
-                              ),
+                              Text(title, style: context.textTheme.titleMedium, textAlign: TextAlign.center),
                               if (!item.officialSite.isNullOrBlank)
                                 RippleTap(
                                   borderRadius: const BorderRadius.all(Radius.circular(2.0)),
@@ -185,16 +174,12 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
                                       children: [
                                         Text(
                                           context.l10n.officialSite,
-                                          style: context.textTheme.bodySmall?.copyWith(
-                                            fontSize: 10.0,
-                                          ),
+                                          style: context.textTheme.bodySmall?.copyWith(fontSize: 10.0),
                                         ),
                                         const Gap(4.0),
                                         Text(
                                           Uri.parse(item.officialSite!).host,
-                                          style: context.textTheme.bodySmall?.copyWith(
-                                            fontSize: 10.0,
-                                          ),
+                                          style: context.textTheme.bodySmall?.copyWith(fontSize: 10.0),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
@@ -205,17 +190,11 @@ class _BangumiPageState extends ConsumerState<BangumiPage> {
                               const Gap(8.0),
                               if (!sites.isNullOrEmpty)
                                 ProviderScope(
-                                  overrides: [
-                                    itemProvider.overrideWithValue(item),
-                                  ],
+                                  overrides: [itemProvider.overrideWithValue(item)],
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Center(
-                                      child: Wrap(
-                                        spacing: 4.0,
-                                        runSpacing: 4.0,
-                                        children: sites!.toList(),
-                                      ),
+                                      child: Wrap(spacing: 4.0, runSpacing: 4.0, children: sites!.toList()),
                                     ),
                                   ),
                                 ),

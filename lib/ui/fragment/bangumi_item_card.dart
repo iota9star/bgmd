@@ -11,12 +11,7 @@ class BangumiItemCard extends ConsumerWidget {
     final locale = ref.watch(settingsProvider.select((e) => e.locale));
     final title = item.cardTitle(locale);
     return TransitionContainer(
-      next: ProviderScope(
-        overrides: [
-          itemProvider.overrideWithValue(item),
-        ],
-        child: const BangumiPage(),
-      ),
+      next: ProviderScope(overrides: [itemProvider.overrideWithValue(item)], child: const BangumiPage()),
       builder: (context, open) {
         return ScalableCard(
           onTap: open,
@@ -38,18 +33,13 @@ class BangumiItemCard extends ConsumerWidget {
                                   color: context.theme.scaffoldBackgroundColor,
                                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                 ),
-                                child: const Center(
-                                  child: Text(
-                                    '🍀',
-                                    style: TextStyle(fontSize: 20.0),
-                                  ),
-                                ),
+                                child: const Center(child: Text('🍀', style: TextStyle(fontSize: 20.0))),
                               )
                             : Material(
                                 clipBehavior: Clip.antiAlias,
                                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                 child: Image(
-                                  image: CacheImage(cover),
+                                  image: CacheImage(cover, webHtmlElementStrategy: WebHtmlElementStrategy.prefer),
                                   fit: BoxFit.cover,
                                   loadingBuilder: (context, child, loadingProgress) {
                                     if (loadingProgress == null) {
@@ -57,12 +47,7 @@ class BangumiItemCard extends ConsumerWidget {
                                     }
                                     final expectedTotalBytes = loadingProgress.expectedTotalBytes;
                                     if (expectedTotalBytes == null) {
-                                      return const Center(
-                                        child: Text(
-                                          '🌝',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                      );
+                                      return const Center(child: Text('🌝', style: TextStyle(fontSize: 20.0)));
                                     }
                                     return Center(
                                       child: Text(
@@ -77,12 +62,7 @@ class BangumiItemCard extends ConsumerWidget {
                                         color: context.theme.scaffoldBackgroundColor,
                                         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                       ),
-                                      child: const Center(
-                                        child: Text(
-                                          '💔',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                      ),
+                                      child: const Center(child: Text('💔', style: TextStyle(fontSize: 20.0))),
                                     );
                                   },
                                 ),
@@ -96,29 +76,32 @@ class BangumiItemCard extends ConsumerWidget {
                           runSpacing: 4.0,
                           spacing: 4.0,
                           alignment: WrapAlignment.end,
-                          children: [
-                            item.type.name,
-                            bangumi.year.toString(),
-                            bangumi.season.labelShort(context),
-                            bangumi.week.labelShort(context),
-                          ]
-                              .map((e) => DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: context.colors.primaryContainer,
-                                      borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 1.25),
-                                      child: Text(
-                                        e.toUpperCase(),
-                                        style: context.textTheme.labelSmall?.copyWith(
-                                          fontSize: 10.0,
-                                          color: context.colors.onPrimaryContainer,
+                          children:
+                              [
+                                    item.type.name,
+                                    bangumi.year.toString(),
+                                    bangumi.season.labelShort(context),
+                                    bangumi.week.labelShort(context),
+                                  ]
+                                  .map(
+                                    (e) => DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: context.colors.primaryContainer,
+                                        borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 1.25),
+                                        child: Text(
+                                          e.toUpperCase(),
+                                          style: context.textTheme.labelSmall?.copyWith(
+                                            fontSize: 10.0,
+                                            color: context.colors.onPrimaryContainer,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),)
-                              .toList(growable: false),
+                                  )
+                                  .toList(growable: false),
                         ),
                       ),
                     ],
@@ -127,12 +110,7 @@ class BangumiItemCard extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
-                child: Text(
-                  title,
-                  style: context.textTheme.bodySmall,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: Text(title, style: context.textTheme.bodySmall, maxLines: 2, overflow: TextOverflow.ellipsis),
               ),
             ],
           ),

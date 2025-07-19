@@ -15,12 +15,7 @@ class BangumiLandCard extends ConsumerWidget {
       return e.toSiteWidget(context, siteMeta);
     });
     return TransitionContainer(
-      next: ProviderScope(
-        overrides: [
-          itemProvider.overrideWithValue(item),
-        ],
-        child: const BangumiPage(),
-      ),
+      next: ProviderScope(overrides: [itemProvider.overrideWithValue(item)], child: const BangumiPage()),
       builder: (context, open) {
         return RippleTap(
           onTap: open,
@@ -43,15 +38,10 @@ class BangumiLandCard extends ConsumerWidget {
                                   color: context.theme.scaffoldBackgroundColor,
                                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                 ),
-                                child: const Center(
-                                  child: Text(
-                                    '🍀',
-                                    style: TextStyle(fontSize: 20.0),
-                                  ),
-                                ),
+                                child: const Center(child: Text('🍀', style: TextStyle(fontSize: 20.0))),
                               )
                             : Image(
-                                image: CacheImage(item.cover),
+                                image: CacheImage(item.cover, webHtmlElementStrategy: WebHtmlElementStrategy.prefer),
                                 fit: BoxFit.cover,
                                 loadingBuilder: (context, child, loadingProgress) {
                                   if (loadingProgress == null) {
@@ -67,12 +57,7 @@ class BangumiLandCard extends ConsumerWidget {
                                         color: context.theme.scaffoldBackgroundColor,
                                         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                       ),
-                                      child: const Center(
-                                        child: Text(
-                                          '🌝',
-                                          style: TextStyle(fontSize: 20.0),
-                                        ),
-                                      ),
+                                      child: const Center(child: Text('🌝', style: TextStyle(fontSize: 20.0))),
                                     );
                                   }
                                   return DecoratedBox(
@@ -94,12 +79,7 @@ class BangumiLandCard extends ConsumerWidget {
                                       color: context.theme.scaffoldBackgroundColor,
                                       borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                                     ),
-                                    child: const Center(
-                                      child: Text(
-                                        '💔',
-                                        style: TextStyle(fontSize: 20.0),
-                                      ),
-                                    ),
+                                    child: const Center(child: Text('💔', style: TextStyle(fontSize: 20.0))),
                                   );
                                 },
                               ),
@@ -131,29 +111,20 @@ class BangumiLandCard extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  title,
-                  style: context.textTheme.titleSmall,
-                ),
+                child: Text(title, style: context.textTheme.titleSmall),
               ),
               if (!item.begin.isNullOrBlank)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     Jiffy.parse(item.begin).format(pattern: 'yyyy-MM-dd HH:mm'),
-                    style: context.textTheme.bodySmall?.copyWith(
-                      fontSize: 10.0,
-                    ),
+                    style: context.textTheme.bodySmall?.copyWith(fontSize: 10.0),
                   ),
                 ),
               if (!sites.isNullOrEmpty)
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    spacing: 4.0,
-                    runSpacing: 4.0,
-                    children: sites!.toList(),
-                  ),
+                  child: Wrap(spacing: 4.0, runSpacing: 4.0, children: sites!.toList()),
                 ),
             ],
           ),

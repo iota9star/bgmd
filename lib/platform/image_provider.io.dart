@@ -10,12 +10,16 @@ import 'package:path/path.dart';
 import '../bgmd.dart';
 
 @immutable
-class CacheImage extends painting.ImageProvider<painting.NetworkImage>
-    implements painting.NetworkImage {
+class CacheImage extends painting.ImageProvider<painting.NetworkImage> implements painting.NetworkImage {
   /// Creates an object that fetches the image at the given URL.
   ///
   /// The arguments [url] and [scale] must not be null.
-  const CacheImage(this.url, {this.scale = 1.0, this.headers});
+  const CacheImage(
+    this.url, {
+    this.scale = 1.0,
+    this.headers,
+    this.webHtmlElementStrategy = painting.WebHtmlElementStrategy.never,
+  });
 
   @override
   final String url;
@@ -27,20 +31,19 @@ class CacheImage extends painting.ImageProvider<painting.NetworkImage>
   final Map<String, String>? headers;
 
   @override
+  final painting.WebHtmlElementStrategy webHtmlElementStrategy;
+
+  @override
   Future<CacheImage> obtainKey(painting.ImageConfiguration configuration) {
     return SynchronousFuture<CacheImage>(this);
   }
 
   @override
-  ImageStreamCompleter loadImage(
-    painting.NetworkImage key,
-    painting.ImageDecoderCallback decode,
-  ) {
+  ImageStreamCompleter loadImage(painting.NetworkImage key, painting.ImageDecoderCallback decode) {
     // Ownership of this controller is handed off to [_loadAsync]; it is that
     // method's responsibility to close the controller's stream when the image
     // has been loaded or an error is thrown.
-    final StreamController<ImageChunkEvent> chunkEvents =
-        StreamController<ImageChunkEvent>();
+    final StreamController<ImageChunkEvent> chunkEvents = StreamController<ImageChunkEvent>();
 
     return MultiFrameImageStreamCompleter(
       codec: _loadAsync(key as CacheImage, chunkEvents, decode),
@@ -58,8 +61,7 @@ class CacheImage extends painting.ImageProvider<painting.NetworkImage>
   // We set `autoUncompress` to false to ensure that we can trust the value of
   // the `Content-Length` HTTP header. We automatically uncompress the content
   // in our call to [consolidateHttpClientResponseBytes].
-  static final HttpClient _sharedHttpClient = HttpClient()
-    ..autoUncompress = false;
+  static final HttpClient _sharedHttpClient = HttpClient()..autoUncompress = false;
 
   static HttpClient get _httpClient {
     HttpClient client = _sharedHttpClient;
@@ -79,12 +81,7 @@ class CacheImage extends painting.ImageProvider<painting.NetworkImage>
   ) async {
     try {
       assert(key == this);
-      chunkEvents.add(
-        const ImageChunkEvent(
-          cumulativeBytesLoaded: 1,
-          expectedTotalBytes: 100,
-        ),
-      );
+      chunkEvents.add(const ImageChunkEvent(cumulativeBytesLoaded: 1, expectedTotalBytes: 100));
       final cacheKey = base64Url.encode(utf8.encode(key.url));
       final cacheFile = await _getCacheFile(cacheKey);
       if (cacheFile.existsSync()) {
@@ -104,21 +101,13 @@ class CacheImage extends painting.ImageProvider<painting.NetworkImage>
         // added on the server later. Avoid having future calls to resolve
         // fail to check the network again.
         await response.drain<List<int>>(<int>[]);
-        throw painting.NetworkImageLoadException(
-          statusCode: response.statusCode,
-          uri: resolved,
-        );
+        throw painting.NetworkImageLoadException(statusCode: response.statusCode, uri: resolved);
       }
 
       final Uint8List bytes = await consolidateHttpClientResponseBytes(
         response,
         onBytesReceived: (int cumulative, int? total) {
-          chunkEvents.add(
-            ImageChunkEvent(
-              cumulativeBytesLoaded: cumulative,
-              expectedTotalBytes: total,
-            ),
-          );
+          chunkEvents.add(ImageChunkEvent(cumulativeBytesLoaded: cumulative, expectedTotalBytes: total));
         },
       );
       if (bytes.lengthInBytes == 0) {
@@ -167,6 +156,5 @@ class CacheImage extends painting.ImageProvider<painting.NetworkImage>
   int get hashCode => Object.hash(url, scale);
 
   @override
-  String toString() =>
-      '${objectRuntimeType(this, 'NetworkImage')}("$url", scale: $scale)';
+  String toString() => '${objectRuntimeType(this, 'NetworkImage')}("$url", scale: $scale)';
 }
